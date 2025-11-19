@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUserProfile } from '@/lib/auth/profile'
 import LogoutButton from '@/components/logout-button'
-import KakaoMap from '@/components/kakao-map'
+import PlaceSearch from '@/components/place-search'
 
 export default async function Home() {
   const supabase = await createClient()
@@ -52,20 +52,18 @@ export default async function Home() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 지도 섹션 */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <KakaoMap className="w-full h-[600px]" />
-          </div>
-        </div>
-
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             O!BAP
           </h2>
           <p className="text-lg text-gray-600">
             직장인을 위한 맛집 지도
           </p>
+        </div>
+
+        {/* 네이버 지도 + 검색 섹션 */}
+        <div className="mb-8">
+          <PlaceSearch />
         </div>
 
         {user && profile && (

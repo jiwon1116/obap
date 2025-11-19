@@ -15,6 +15,11 @@ export async function GET(request: NextRequest) {
   const naverClientId = process.env.NAVER_CLIENT_ID
   const naverClientSecret = process.env.NAVER_CLIENT_SECRET
 
+  console.log('Naver API Keys:', {
+    clientId: naverClientId ? `${naverClientId.substring(0, 5)}...` : 'NOT SET',
+    clientSecret: naverClientSecret ? `${naverClientSecret.substring(0, 5)}...` : 'NOT SET',
+  })
+
   if (!naverClientId || !naverClientSecret) {
     return NextResponse.json(
       { error: 'Naver API 키가 설정되지 않았습니다' },
@@ -41,13 +46,26 @@ export async function GET(request: NextRequest) {
     )
 
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Naver API Error Response:', {
+        status: response.status,
+        body: errorText,
+      })
       throw new Error(`Naver API error: ${response.status}`)
     }
 
     const data = await response.json()
+    console.log('Naver API Response:', JSON.stringify(data, null, 2))
 
-    // 결과 가공
-    const places = data.items.map((place: any, index: number) => ({
+    // 응답 데이터 구조 확인
+    if (!data.places && !data.items) {
+      console.error('Unexpected API response structure:', data)
+      throw new Error('Unexpected API response structure')
+    }
+
+    // 결과 가공 (NCP Place API는 places 배열 사용)
+    const items = data.places || data.items || []
+    const places = items.map((place: any, index: number) => ({
       id: `naver-${index}-${Date.now()}`, // 네이버 API는 고유 ID를 제공하지 않으므로 생성
       name: place.title.replace(/<\/?b>/g, ''), // HTML 태그 제거
       category: place.category || '',

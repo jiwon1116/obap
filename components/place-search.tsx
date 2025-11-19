@@ -55,15 +55,15 @@ export default function PlaceSearch() {
       )}
 
       {/* 지도 + 검색 결과 */}
-      {places.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* 네이버 지도 */}
-          <div className="lg:sticky lg:top-6 h-fit">
-            <h3 className="text-lg font-semibold mb-3">지도</h3>
-            <NaverMap places={places} height="600px" />
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 네이버 지도 - 항상 표시 */}
+        <div className="lg:sticky lg:top-6 h-fit">
+          <h3 className="text-lg font-semibold mb-3">지도</h3>
+          <NaverMap places={places} height="600px" />
+        </div>
 
-          {/* 검색 결과 리스트 */}
+        {/* 검색 결과 리스트 */}
+        {places.length > 0 ? (
           <div>
             <h3 className="text-lg font-semibold mb-3">
               검색 결과 ({places.length}개)
@@ -101,15 +101,15 @@ export default function PlaceSearch() {
               ))}
             </div>
           </div>
-        </div>
-      )}
-
-      {/* 검색 결과 없음 */}
-      {!loading && places.length === 0 && searchQuery && (
-        <div className="text-center py-8 text-gray-500">
-          검색 결과가 없습니다
-        </div>
-      )}
+        ) : (
+          <div className="flex items-center justify-center h-[600px] bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <div className="text-center text-gray-500">
+              <p className="text-lg font-medium mb-2">검색 결과가 없습니다</p>
+              <p className="text-sm">위 검색창에서 맛집을 검색해보세요!</p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
