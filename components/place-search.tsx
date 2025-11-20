@@ -259,6 +259,19 @@ export default function PlaceSearch() {
           <User size={24} />
         </button>
       </nav>
+
+      {/* 관리자 전용 버튼 */}
+      {userProfile?.role === 'admin' && (
+        <button
+          onClick={() => {
+            sessionStorage.removeItem('viewMainPage')
+            window.location.href = '/admin/restaurants'
+          }}
+          className="fixed bottom-20 right-6 z-50 px-4 py-3 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 transition-colors font-medium"
+        >
+          관리자 페이지
+        </button>
+      )}
     </div>
   )
 }

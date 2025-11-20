@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Restaurant, RestaurantWithDistance } from '@/types/database'
+import { Restaurant, RestaurantWithDistance, Menu } from '@/types/database'
 import { ChevronDown, Clock, Heart } from 'lucide-react'
 
 interface RestaurantSliderProps {
@@ -21,6 +21,8 @@ export default function RestaurantSlider({
   const [isOpen, setIsOpen] = useState(false)
   const [activeFilter, setActiveFilter] = useState<'최신순' | '가격순' | '거리순'>('최신순')
   const [showUserProfile, setShowUserProfile] = useState(false)
+  const [menus, setMenus] = useState<Menu[]>([])
+  const [loadingMenus, setLoadingMenus] = useState(false)
 
   // RestaurantWithDistance 타입 가드
   const hasWalkingTime = (restaurant: Restaurant | RestaurantWithDistance): restaurant is RestaurantWithDistance => {
@@ -30,10 +32,27 @@ export default function RestaurantSlider({
   useEffect(() => {
     if (selectedRestaurant) {
       setIsOpen(true)
+      fetchMenus(selectedRestaurant.id)
     } else {
       setIsOpen(false)
+      setMenus([])
     }
   }, [selectedRestaurant])
+
+  const fetchMenus = async (restaurantId: string) => {
+    setLoadingMenus(true)
+    try {
+      const response = await fetch(`/api/menus?restaurant_id=${restaurantId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setMenus(data.menus || [])
+      }
+    } catch (error) {
+      console.error('메뉴 조회 실패:', error)
+    } finally {
+      setLoadingMenus(false)
+    }
+  }
 
   const handleClose = () => {
     setIsOpen(false)
@@ -168,6 +187,57 @@ export default function RestaurantSlider({
                   📞 {selectedRestaurant.phone}
                 </div>
               )}
+
+              {/* 메뉴 섹션 */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-lg font-bold mb-4">메뉴</h4>
+                {loadingMenus ? (
+                  <div className="text-center py-8 text-gray-500">
+                    메뉴 불러오는 중...
+                  </div>
+                ) : menus.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    등록된 메뉴가 없습니다
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {menus.map((menu) => (
+                      <div
+                        key={menu.id}
+                        className="flex gap-4 p-3 bg-gray-50 rounded-lg"
+                      >
+                        {menu.image_url && (
+                          <img
+                            src={menu.image_url}
+                            alt={menu.menu_name}
+                            className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
+                          />
+                        )}
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between mb-1">
+                            <h5 className="font-bold flex items-center gap-2">
+                              {menu.menu_name}
+                              {menu.is_signature && (
+                                <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                                  대표
+                                </span>
+                              )}
+                            </h5>
+                            <span className="font-semibold text-blue-600">
+                              {menu.price.toLocaleString()}원
+                            </span>
+                          </div>
+                          {menu.description && (
+                            <p className="text-xs text-gray-600 mt-1">
+                              {menu.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             // 전체 식당 목록

@@ -61,6 +61,19 @@ export interface CompanyLocationRequest {
   updated_at: string
 }
 
+export interface Menu {
+  id: string
+  restaurant_id: string
+  menu_name: string
+  price: number
+  description: string | null
+  image_url: string | null
+  is_signature: boolean
+  is_available: boolean
+  created_at: string
+  updated_at: string
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -78,6 +91,11 @@ export interface Database {
         Row: CompanyLocationRequest
         Insert: Omit<CompanyLocationRequest, 'id' | 'status' | 'requested_at' | 'reviewed_at' | 'reviewed_by' | 'review_note' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<CompanyLocationRequest, 'id' | 'user_id' | 'requested_at' | 'created_at'>>
+      }
+      menus: {
+        Row: Menu
+        Insert: Omit<Menu, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Menu, 'id' | 'restaurant_id' | 'created_at' | 'updated_at'>>
       }
     }
     Functions: {
