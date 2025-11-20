@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       nickname,
       role,
       company_domain: companyDomain,
-    })
+    } as any)
 
     if (insertError) {
       console.error('Error creating profile:', insertError)

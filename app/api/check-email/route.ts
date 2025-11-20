@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     // auth.users 테이블에서 이메일이 이미 존재하는지 확인
     const { data, error } = await supabase.rpc('check_email_exists', {
       check_email: email,
-    })
+    } as any)
 
     if (error) {
       console.error('Error checking email:', error)

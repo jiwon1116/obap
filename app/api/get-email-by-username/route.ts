@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       )
     }
 
-    return NextResponse.json({ email: data.email })
+    return NextResponse.json({ email: (data as any).email })
   } catch (error) {
     console.error('Error in get-email-by-username API:', error)
     return NextResponse.json(

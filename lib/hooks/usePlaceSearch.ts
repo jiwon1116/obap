@@ -14,13 +14,14 @@ export function usePlaceSearch() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const searchPlaces = async (params: SearchParams) => {
+  const searchPlaces = async (params: SearchParams & { saveToDb?: boolean }) => {
     setLoading(true)
     setError(null)
 
     try {
       const queryParams = new URLSearchParams({
         query: params.query,
+        save: params.saveToDb !== false ? 'true' : 'false', // 기본값은 true (자동 저장)
         ...(params.x && { x: params.x.toString() }),
         ...(params.y && { y: params.y.toString() }),
         ...(params.radius && { radius: params.radius.toString() }),

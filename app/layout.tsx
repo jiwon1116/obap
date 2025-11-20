@@ -20,6 +20,21 @@ export default function RootLayout({
           strategy="beforeInteractive"
           src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`}
         />
+        <Script strategy="afterInteractive" src="/marker-clustering.js" />
+        <Script
+          strategy="afterInteractive"
+          id="marker-clustering-init"
+          dangerouslySetInnerHTML={{
+            __html: `
+              setTimeout(function() {
+                if (typeof window !== 'undefined' && window.naver && window.MarkerClustering) {
+                  window.naver.maps.MarkerClustering = window.MarkerClustering;
+                  console.log('✅ MarkerClustering 로드 완료');
+                }
+              }, 100);
+            `,
+          }}
+        />
       </body>
     </html>
   )

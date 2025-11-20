@@ -1,0 +1,8 @@
+# 네이버 API 키 (발급 후 여기에 복사하세요)
+
+Client ID: 여기에_복사
+Client Secret: 여기에_복사
+
+# .env.local에 추가할 내용:
+NAVER_CLIENT_ID=여기에_Client_ID_붙여넣기
+NAVER_CLIENT_SECRET=여기에_Client_Secret_붙여넣기

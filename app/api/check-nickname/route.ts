@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     // auth.users와 profiles 둘 다 확인
     const { data, error } = await supabase.rpc('check_nickname_exists', {
       check_nickname: nickname,
-    })
+    } as any)
 
     if (error) {
       console.error('Error checking nickname:', error)
