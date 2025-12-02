@@ -2,7 +2,7 @@
 
 > “Find the best lunch spots around your office.”
 
-GudiMwoMeokJi is an MVP project designed for **office workers in the Gudi area** to easily discover nearby restaurants, leave verified reviews, and connect with coworkers through company-based chat rooms.
+O!bap is an MVP project designed for **office workers in the Gudi area** to easily discover nearby restaurants, leave verified reviews, and connect with coworkers through company-based chat rooms.
 
 This project is built using a **Spec-Driven Development (SDD)** approach —
 
@@ -126,7 +126,7 @@ every feature begins with clear specifications and acceptance criteria before im
 ## **Project Structure**
 
 ```
-gudimwomeokji/
+O!bap/
 ├── apps/
 │   ├── web/        # Frontend (Next.js)
 │   └── admin/      # Admin (Refine + Ant Design)
@@ -177,7 +177,7 @@ gudimwomeokji/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-org>/gudimwomeokji.git
+git clone https://github.com/<your-org>/O!bap.git
 
 # 2. Install dependencies
 npm install
